@@ -155,6 +155,7 @@ export default class EditorPage extends EditorEvent<any, EditorPageStatus> {
     if (!this.MODE_MOVE_MOUSE_DOWN_LOCK) {
       this.MOUSE_LOCATION_COMPONENT_FOCUS = null
       this.editorConfigPanel.switchTab(3)
+      this.clearFocusHint()
     }
 
     this.MODE_MOVE_MOUSE_DOWN_LOCK = false
@@ -163,13 +164,11 @@ export default class EditorPage extends EditorEvent<any, EditorPageStatus> {
   protected onMouseMove(e: React.MouseEvent<HTMLElement>) {
     super.onMouseMove(e);
 
-    this.drawRectangleCreatePreview(function (x, y, width, height) {
-
-    })
+    this.drawRectangleCreatePreview()
     this.resizeCursorDraw(e.clientX, e.clientY)
 
     // 组件移动
-    if (this.MOUSE_LOCATION_COMPONENT_FOCUS != null && this.MOUSE_EVENT_DOWN_LEFT) {
+    if (this.MOUSE_LOCATION_COMPONENT_FOCUS != null && this.MOUSE_EVENT_DOWN_LEFT && !this.MODE_RECTANGLE_CREATE_OPEN) {
       const nowComponentEl = document.getElementById(this.MOUSE_LOCATION_COMPONENT_FOCUS.id)
       if (nowComponentEl != null) {
         nowComponentEl.style.cursor = "move"
@@ -206,9 +205,8 @@ export default class EditorPage extends EditorEvent<any, EditorPageStatus> {
 
         ac.state.events.onMouseDown.push((e, ac) => {
           this.MOUSE_LOCATION_COMPONENT_FOCUS = ac
-          this.MODE_MOVE_MOUSE_DOWN_LOCK = true
 
-          this.addFocusHint(e.currentTarget, ac)
+          this.addFocusHint(e.currentTarget, ac, false)
 
           return false
         })
@@ -231,16 +229,16 @@ export default class EditorPage extends EditorEvent<any, EditorPageStatus> {
         })
 
         const el = document.getElementById(ac.id)
-        if (el != null) this.addFocusHint(el, ac)
+        if (el != null) this.addFocusHint(el, ac, true)
       })
     })
   }
 
   // 添加组件激活焦点暗示
-  addFocusHint = (e: HTMLElement, ac: AphroditeComponent) => {
+  addFocusHint = (e: HTMLElement, ac: AphroditeComponent, clearFocusLock: boolean) => {
     this.editorConfigPanel.setAphroditeComponent(ac)
     this.editorConfigPanel.switchTab(0)
-    this.MODE_MOVE_MOUSE_DOWN_LOCK = true
+    this.MODE_MOVE_MOUSE_DOWN_LOCK = !clearFocusLock
     if (this.MODE_COMPONENT_HOVER_HINT_ELEMENT != null) {
       this.MODE_COMPONENT_HOVER_HINT_ELEMENT.className = this.MODE_COMPONENT_HOVER_HINT_ELEMENT.className.replaceAll(" " + EditorStyle.componentHoverHint, "")
     }
@@ -248,41 +246,35 @@ export default class EditorPage extends EditorEvent<any, EditorPageStatus> {
     this.MODE_COMPONENT_HOVER_HINT_ELEMENT.className = this.MODE_COMPONENT_HOVER_HINT_ELEMENT.className + " " + EditorStyle.componentHoverHint
   }
 
+  // 清空组件激活焦点暗示
+  clearFocusHint = () => {
+    if (this.MODE_COMPONENT_HOVER_HINT_ELEMENT != null) {
+      this.MODE_COMPONENT_HOVER_HINT_ELEMENT.className = this.MODE_COMPONENT_HOVER_HINT_ELEMENT.className.replaceAll(" " + EditorStyle.componentHoverHint, "")
+    }
+  }
+
   // 组件缩放光标渲染
   resizeCursorDraw = (x: number, y: number) => {
     if (this.MOUSE_LOCATION_COMPONENT == null) return
     const eac = this.MOUSE_LOCATION_COMPONENT
+    const ace = document.getElementById(this.MOUSE_LOCATION_COMPONENT.id)
     let acLeft = eac.state.style.location.x
     let acRight = eac.state.style.location.x + eac.state.style.size.width
     let acTop = eac.state.style.location.y
     let acBottom = eac.state.style.location.y + eac.state.style.size.height
 
-    if (x > acLeft && x - acLeft < 5 && x - acLeft > 0) {
-      if (eac.state.style.cursor != "col-resize") eac.setStyle(((style, update) => {
-        style.cursor = "col-resize"
-        update(style)
-      }))
-    }else if (y > acTop && y - acTop < 5 && y - acTop > 0) {
-      if (eac.state.style.cursor != "row-resize") eac.setStyle(((style, update) => {
-        style.cursor = "row-resize"
-        update(style)
-      }))
-    }else if (x < acRight && acRight - x < 5 && acRight - x > 0) {
-      if (eac.state.style.cursor != "col-resize") eac.setStyle(((style, update) => {
-        style.cursor = "col-resize"
-        update(style)
-      }))
-    }else if (y < acBottom && acBottom - y < 5 && acBottom - y > 0) {
-      if (eac.state.style.cursor != "row-resize") eac.setStyle(((style, update) => {
-        style.cursor = "row-resize"
-        update(style)
-      }))
-    }else {
-      if (eac.state.style.cursor.indexOf("resize") > 0) eac.setStyle(((style, update) => {
-        style.cursor = "default"
-        update(style)
-      }))
+    if (ace != null) {
+      if (x > acLeft && x - acLeft <= 5 && x - acLeft >= 0) {
+        ace.style.cursor = "col-resize"
+      }else if (y > acTop && y - acTop <= 5 && y - acTop >= 0) {
+        ace.style.cursor = "row-resize"
+      }else if (x < acRight && acRight - x <= 5 && acRight - x >= 0) {
+        ace.style.cursor = "col-resize"
+      }else if (y < acBottom && acBottom - y <= 5 && acBottom - y >= 0) {
+        ace.style.cursor = "row-resize"
+      }else ace.style.cursor = "default"
     }
+
   }
 
   // 开始矩形创建预览
@@ -297,7 +289,7 @@ export default class EditorPage extends EditorEvent<any, EditorPageStatus> {
   }
 
   // 绘制矩形创建预览，在模式切换为完成的时候将把产生的位置尺寸参数传入回调函数
-  drawRectangleCreatePreview = (finishCallback: (x: number, y: number, width: number, height: number) => void) => {
+  drawRectangleCreatePreview = (finishCallback?: (x: number, y: number, width: number, height: number) => void) => {
     if (this.MODE_RECTANGLE_CREATE_EDIT && this.MODE_RECTANGLE_CREATE_OPEN) {
 
       let width = this.MOUSE_LOCATION_X - this.MOUSE_LOCATION_DOWN_LEFT_X
@@ -353,7 +345,7 @@ export default class EditorPage extends EditorEvent<any, EditorPageStatus> {
           y = this.MOUSE_LOCATION_DOWN_LEFT_Y - this.canvas.state.style.margin.top
           h = height
         }
-        finishCallback(x, y, w, h)
+        if (finishCallback != undefined) finishCallback(x, y, w, h)
       }
     }
 
