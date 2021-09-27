@@ -1,0 +1,49 @@
+*,
+*::before,
+*::after {
+  box-sizing: content-box !important;
+}
+
+body {
+  background: #262626;
+}
+
+div,p,i,image,ul,li,code,span {
+  -moz-user-select:none; /*火狐*/
+  -webkit-user-select:none; /*webkit浏览器*/
+  -ms-user-select:none; /*IE10*/
+  -khtml-user-select:none; /*早期浏览器*/
+  user-select:none;
+}
+
+// 阿佛洛狄特根样式
+.aphrodite {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  z-index: -999999999;
+}
+
+// 标准组件样式
+.aphroditeComponent {
+  width: 100px;
+  height: 30px;
+  cursor: default;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+// 作为根组件样式
+.aphroditeComponentRoot {
+  position: fixed;
+}
+
+// 作为子组件样式
+.aphroditeComponentSon {
+  position: absolute;
+}

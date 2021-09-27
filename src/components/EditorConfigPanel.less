@@ -1,0 +1,102 @@
+
+.editorConfigPanel {
+  height: 100%;
+  width: 240px;
+  background: white;
+  position: absolute;
+  right: 0;
+  top: 0;
+  box-shadow: -1px 2px 11px 0 rgba(0,0,0,0.35);
+  -webkit-box-shadow: -1px 2px 11px 0 rgba(0,0,0,0.35);
+  -moz-box-shadow: -1px 2px 11px 0 rgba(0,0,0,0.35);
+  overflow: hidden;
+}
+
+.editorConfigPanelTab {
+
+  .editorConfigPanelTabItem {
+    float: left;
+    cursor: pointer;
+    width: 23px;
+    margin-right: 10px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #B9B9B9;
+    transition: all 0.3s;
+    text-align: left;
+    height: 40px;
+    line-height: 40px;
+  }
+
+  .editorConfigPanelTabItem:hover {
+    color: #4B4A54;
+  }
+
+  list-style: none;
+  margin: 0;
+  border-bottom: solid 1px #DFE0DF;
+  height: auto;
+  overflow: hidden;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  .editorConfigPanelTabItemFocus {
+    color: #4B4A54;
+    cursor: default;
+  }
+
+  .editorConfigPanelTabPanel {
+    position: absolute;
+    left: 0;
+    top: 60px;
+    background: white;
+    width: 100%;
+    height: auto;
+    max-height: calc(100% - 60px);
+    overflow: auto;
+    color: black;
+    cursor: default;
+    text-align: left;
+    line-height: normal;
+  }
+
+  .editorConfigPanelTabTitle {
+    padding-left: 15px;
+    padding-right: 15px;
+    font-weight: normal;
+    margin-bottom: 20px;
+  }
+}
+
+.backgroundSelect {
+  width: calc(100% - 30px);
+  height: 16px;
+  margin-left: 15px;
+
+  .colorCard {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    background: red;
+    float: left;
+    border: 0;
+    box-shadow: 0 0 1px 1px rgba(0,0,0,0.15) inset;
+    -webkit-box-shadow: 0 0 1px 1px rgba(0,0,0,0.15) inset;
+    -moz-box-shadow: 0 0 1px 1px rgba(0,0,0,0.15) inset;
+    cursor: pointer;
+  }
+
+  .colorInput {
+    border: 0;
+    outline: none;
+    width: 50px;
+    margin-right: 10px;
+  }
+
+  .colorInputTransparent {
+    border: 0;
+    width: 38px;
+    outline: none;
+  }
+}
+

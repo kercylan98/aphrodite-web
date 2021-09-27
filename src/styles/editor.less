@@ -1,0 +1,70 @@
+
+.editor {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.editorCanvasRectangleEditor {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.editorTopBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 41px;
+  width: calc(100% - 240px);
+  background: #262626;
+  transition: height 0.3s;
+  box-shadow: -1px 2px 11px 0 rgba(0,0,0,0.35);
+  -webkit-box-shadow: -1px 2px 11px 0 rgba(0,0,0,0.35);
+  -moz-box-shadow: -1px 2px 11px 0 rgba(0,0,0,0.35);
+}
+
+.editorTopBarList {
+  list-style: none;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+}
+
+.editorTopBarListItem {
+  float: left;
+  line-height: 41px;
+  color: #DFE0DF;
+  font-size: 14px;
+  width: 48px;
+  text-align: center;
+  cursor: pointer;
+  margin-left: 5px;
+  transition: all 0.3s;
+}
+
+.editorTopBarListItem:hover {
+  color: white;
+  background: #323232;
+}
+
+.editorLeftBar {
+  width: 240px;
+  position: absolute;
+  top: 41px;
+  height: calc(100% - 41px);
+  background: white;
+  box-shadow: -1px 2px 11px 0 rgba(0,0,0,0.35);
+  -webkit-box-shadow: -1px 2px 11px 0 rgba(0,0,0,0.35);
+  -moz-box-shadow: -1px 2px 11px 0 rgba(0,0,0,0.35);
+}
+
+.componentHoverHint {
+  transition: box-shadow 0.2s;
+  box-shadow: 0 0 5px 1px rgba(86,253,81,0.88) inset;
+  -webkit-box-shadow: 0 0 5px 1px rgba(86,253,81,0.88) inset;
+  -moz-box-shadow: 0 0 5px 1px rgba(86,253,81,0.88) inset;
+  z-index: 99999 !important;
+}
+
