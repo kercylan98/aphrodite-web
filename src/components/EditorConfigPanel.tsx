@@ -77,6 +77,7 @@ export default class EditorConfigPanel extends React.Component<EditorConfigPanel
       <div className={Style.editorConfigPanel}>
         <ul className={Style.editorConfigPanelTab}>
           <Tab name={"样式"} index={0} focus={this.state.focus} switchTab={this.switchTab}>
+
             <p className={Style.editorConfigPanelTabTitle}>背景</p>
             <div className={Style.backgroundSelect}>
               <div className={Style.colorCard} style={{backgroundColor: this.state.backgroundColor}}/>
@@ -91,13 +92,19 @@ export default class EditorConfigPanel extends React.Component<EditorConfigPanel
               }}/>
               <input type={"text"} className={Style.colorInputTransparent} placeholder={"100%"}/>
             </div>
+
+            <p className={Style.editorConfigPanelTabTitle} style={{marginTop: "20px"}}>尺寸</p>
+
           </Tab>
+
           <Tab name={"效果"} index={1} focus={this.state.focus} switchTab={this.switchTab}>
 
           </Tab>
+
           <Tab name={"事件"} index={2} focus={this.state.focus} switchTab={this.switchTab}>
 
           </Tab>
+
           {/* 无焦点页面 */}
           <Tab name={""} index={3} focus={this.state.focus} switchTab={this.switchTab}>
 
